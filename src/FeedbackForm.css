@@ -1,0 +1,84 @@
+.feedback-form {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .feedback-form h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .table-header, .table-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table-header {
+    font-weight: bold;
+  }
+  
+  .question {
+    flex: 2;
+    color: #333;
+  }
+  
+  .options {
+    flex: 3;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .option-button {
+    font-size: 20px;
+    padding: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .option-button.good {
+    color: green;
+  }
+  
+  .option-button.neutral {
+    color: orange;
+  }
+  
+  .option-button.bad {
+    color: red;
+  }
+  
+  .option-button.selected {
+    font-weight: bold;
+    transform: scale(1.2);
+  }
+  
+  .submit-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0078d4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #005a9e;
+  }
+  
