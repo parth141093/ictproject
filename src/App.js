@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./FeedbackForm.css"; // Create a separate CSS file for styles if needed
 
 // FeedbackForm Component
 function FeedbackForm() {
@@ -29,43 +28,54 @@ function FeedbackForm() {
   };
 
   return (
-    <div className="feedback-form">
-      <h2>Työelämään valmentautumisen yleiset tavoitteet</h2>
-      <div className="form-table">
-        <div className="table-header">
-          <span>Question</span>
-          <span>Onnistuin hyvin</span>
-          <span>Onnistuin toisinaan</span>
-          <span>Tarvitsen harjoitusta</span>
-        </div>
-
-        {questions.map((question, index) => (
-          <div className="table-row" key={index}>
-            <span className="question">{question}</span>
-            <div className="options">
-              <button
-                className={`option-button ${feedback[index] === 1 ? "selected good" : ""}`}
-                onClick={() => handleFeedbackChange(index, 1)}
-              >
-                😊
-              </button>
-              <button
-                className={`option-button ${feedback[index] === 0 ? "selected neutral" : ""}`}
-                onClick={() => handleFeedbackChange(index, 0)}
-              >
-                😐
-              </button>
-              <button
-                className={`option-button ${feedback[index] === -1 ? "selected bad" : ""}`}
-                onClick={() => handleFeedbackChange(index, -1)}
-              >
-                😟
-              </button>
-            </div>
-          </div>
-        ))}
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">Työelämään valmentautumisen yleiset tavoitteet</h2>
+      <div className="table-responsive">
+        <table className="table table-bordered text-center align-middle">
+          <thead className="table-light">
+            <tr>
+              <th>Question</th>
+              <th>Onnistuin hyvin</th>
+              <th>Onnistuin toisinaan</th>
+              <th>Tarvitsen harjoitusta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questions.map((question, index) => (
+              <tr key={index}>
+                <td>{question}</td>
+                <td>
+                  <button
+                    className={`btn btn-success ${feedback[index] === 1 ? "active" : ""}`}
+                    onClick={() => handleFeedbackChange(index, 1)}
+                  >
+                    😊
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className={`btn btn-warning ${feedback[index] === 0 ? "active" : ""}`}
+                    onClick={() => handleFeedbackChange(index, 0)}
+                  >
+                    😐
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className={`btn btn-danger ${feedback[index] === -1 ? "active" : ""}`}
+                    onClick={() => handleFeedbackChange(index, -1)}
+                  >
+                    😟
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <button className="submit-button">Seuraava Sivu</button>
+      <div className="text-center mt-4">
+        <button className="btn btn-primary">Seuraava Sivu</button>
+      </div>
     </div>
   );
 }
