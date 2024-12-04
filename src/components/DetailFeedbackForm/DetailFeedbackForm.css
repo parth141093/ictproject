@@ -1,0 +1,227 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .feedback-form {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    min-height: 600px;
+  }
+  
+  .luovi-logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .luovi-logo-img {
+    max-height: 80px;
+  }
+  
+  /* Question Section */
+  .question-container {
+    text-align: center;
+  }
+  
+  .question-container h4 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .listen-button {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .listen-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* Feedback Options */
+  .feedback-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    border-radius: 55px; /* Add border radius to the container */
+    overflow: visible; /* Ensure the child items respect the border-radius */
+    background-color: #f4f4f4; /* Optionally, you can give a background color */
+    padding: 10px; /* Add padding to create space inside the container */
+  }
+  
+  .feedback-option {
+    flex: 1;
+    max-width: 120px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  
+  .feedback-option.height-200px {
+    height: 200px;
+  }
+
+  .feedback-option.selected {
+    border-color: #007bff;
+    transform: scale(1.1);
+  }
+  
+  .feedback-option .option-icon {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+  }
+  
+  .feedback-option.green .option-icon {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .feedback-option.yellow .option-icon {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .feedback-option.red .option-icon {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .feedback-option p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Position the Back Button */
+.back-button {
+  position: absolute;
+  left: 20px; /* Position the button on the left side */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 30px;
+  background-color: #a4a0a0;
+  color: black;
+  border: none;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.back-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.back-button svg {
+  margin-right: 8px; /* Add space between text and icon */
+}
+
+/* Ensure the button looks consistent on smaller screens */
+@media (max-width: 768px) {
+  .back-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .back-button svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Position the Next Button */
+.next-button {
+  position: absolute;
+  right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 30px;
+  background-color: #a4a0a0;
+  color: black;
+  border: none;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.next-button:hover {
+  background-color: #0056b3;
+}
+
+.next-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.next-button svg {
+  margin-left: 8px; /* Add space between text and icon */
+}
+
+/* Ensure the button looks consistent on smaller screens */
+@media (max-width: 768px) {
+  .next-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .next-button svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+
+  
+  .fxemoji--speaker3soundwaves {
+    display: inline-block;
+    width: 48px; /* Adjust size here */
+    height: 48px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23757f80' d='M205.504 438.735L54.186 285.036c-18.786-19.082-18.786-49.708 0-68.79l151.318-153.7c30.772-31.257 83.962-9.467 83.962 34.395V404.34c.001 43.862-53.189 65.652-83.962 34.395'/%3E%3Cpath fill='%23c4b6b6' d='M126.442 359.044H36.574c-15.84 0-28.8-12.96-28.8-28.8V171.038c0-15.84 12.96-28.8 28.8-28.8h89.869v216.806z'/%3E%3Cpath fill='%23000' d='M364.817 369.361c-4.336 0-8.579-2.15-11.075-6.082c-3.878-6.11-2.07-14.207 4.04-18.087c25.883-16.43 44.359-44.487 49.423-75.05c6.99-42.19-12.698-86.263-48.992-109.671c-6.082-3.923-7.832-12.032-3.909-18.114c3.921-6.083 12.03-7.835 18.115-3.91c44.944 28.987 69.314 83.633 60.641 135.978c-6.264 37.803-29.154 72.53-61.231 92.893a13.05 13.05 0 0 1-7.012 2.043m50.275 36.129c42.775-27.153 73.3-73.467 81.654-123.89c11.564-69.796-20.938-142.665-80.876-181.322c-6.085-3.925-14.194-2.173-18.115 3.91c-3.923 6.082-2.173 14.192 3.909 18.114c51.288 33.078 79.107 95.374 69.227 155.015c-7.155 43.183-33.266 82.828-69.846 106.048c-6.109 3.878-7.918 11.976-4.04 18.087a13.093 13.093 0 0 0 18.087 4.038m-79.742-89.852c17.855-11.337 30.093-29.896 33.576-50.92c4.758-28.721-8.601-58.696-33.243-74.588c-6.081-3.922-14.192-2.172-18.114 3.91s-2.173 14.192 3.91 18.115c15.989 10.312 24.667 29.714 21.592 48.279c-2.233 13.476-10.371 25.841-21.768 33.078c-6.11 3.879-7.918 11.978-4.04 18.087a13.1 13.1 0 0 0 11.075 6.082a13.06 13.06 0 0 0 7.012-2.043'/%3E%3C/svg%3E");
+  }
+
+
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .feedback-option {
+      max-width: 100px;
+    }
+  
+    .feedback-option .option-icon {
+      font-size: 1.8rem;
+      height: 50px;
+      width: 50px;
+    }
+  }
+  

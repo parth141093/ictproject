@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const questionsRoute = require('./routes/questions'); // Adjust the path as needed
+const submitRoute = require('./routes/submit');
 const MongodbUrl = require('./const');
 
 const app = express();
@@ -8,8 +9,16 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 // Use the /questions route
-app.use('/questions', questionsRoute);
+app.use('/api/questions', questionsRoute);
+app.use('/api/submit', submitRoute);
 
 // Connect to MongoDB and start the server
 mongoose
