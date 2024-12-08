@@ -1,0 +1,12 @@
+/* Increase checkbox size */
+.large-checkbox {
+    width: 1.5em; /* Adjust width */
+    height: 1.5em; /* Adjust height */
+    cursor: pointer;
+  }
+  
+  /* Align label with larger checkbox */
+  .form-check-label {
+    margin-left: 0.5em; /* Space between checkbox and label */
+    font-size: 1.2em;   /* Slightly larger label text */
+  }

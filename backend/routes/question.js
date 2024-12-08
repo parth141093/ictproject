@@ -31,7 +31,11 @@ router.get('/:id', async (req, res) => {
     }
 
     // Fetch the options associated with the question
-    const options = await Option.find({ question_id: questionId }).lean();
+    const options = await Option.findOne({ question_id: questionId }).lean();
+
+    if (!options) {
+      return res.status(404).json({ error: 'Options not found' });
+    }
 
     // Combine the data
     res.json({ ...question, options });
@@ -50,12 +54,12 @@ router.post('/', async (req, res) => {
     const savedQuestion = await newQuestion.save();
 
     // Create associated options
-    if (options && Array.isArray(options)) {
-      const optionsData = options.map((opt) => ({
-        ...opt,
+    if (options && typeof options === "object") {
+      const optionsData = {
+        ...options,
         question_id: savedQuestion._id,
-      }));
-      await Option.insertMany(optionsData);
+      };
+      await Option.create(optionsData);
     }
 
     res.status(201).json({ message: 'Question and options created successfully', question: savedQuestion });
@@ -81,15 +85,15 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Question not found' });
     }
 
-    // Update associated options
-    if (options && Array.isArray(options)) {
-      // Delete old options and insert new ones
+    // Update associated options if provided
+    if (options && typeof options === 'object') {
+      // Delete old options and insert new ones (since we're using a single object for options)
       await Option.deleteMany({ question_id: questionId });
-      const optionsData = options.map((opt) => ({
-        ...opt,
+      const optionsData = {
+        ...options,
         question_id: questionId,
-      }));
-      await Option.insertMany(optionsData);
+      };
+      await Option.create(optionsData);  // Using Option.create since we're sending a single object, not an array
     }
 
     res.json({ message: 'Question and options updated successfully', question: updatedQuestion });

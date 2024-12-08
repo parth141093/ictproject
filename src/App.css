@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+/* Custom CSS in App.css */
+.navbar .btn.active {
+  background-color: #007bff; /* Active button background */
+}
+
+.navbar .btn:hover {
+  background-color: #0056b3; /* Button hover effect */
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
