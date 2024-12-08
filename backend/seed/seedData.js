@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Question = require('../models/question');
 const Option = require('../models/option');
+const Submit = require('../models/submit');
 const MongodbUrl = require('../const');
 
 const seedData = async () => {
@@ -25,6 +26,7 @@ const seedData = async () => {
     // Clear existing data
     await Question.deleteMany({});
     await Option.deleteMany({});
+    await Submit.deleteMany({});
 
     // Insert questions and options
     for (let i = 0; i < questions.length; i++) {

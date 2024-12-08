@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const questionsRoute = require('./routes/questions'); // Adjust the path as needed
+const questionsRoute = require('./routes/question'); // Adjust the path as needed
 const submitRoute = require('./routes/submit');
+const usernameRoutes = require('./routes/username'); // Adjust path
 const MongodbUrl = require('./const');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 // Use the /questions route
 app.use('/api/questions', questionsRoute);
 app.use('/api/submit', submitRoute);
+app.use('/api/usernames', usernameRoutes);
 
 // Connect to MongoDB and start the server
 mongoose

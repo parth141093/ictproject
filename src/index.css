@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Sidebar Link Styling */
+.active-link {
+  background-color: #0d6efd !important; /* Active link color */
+  color: #fff !important;
+}
+
+.inactive-link {
+  color: #ddd !important;
+  text-decoration: none;
+}
+
+/* Adjust padding and margins for a seamless layout */
+/* body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+} */

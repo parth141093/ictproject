@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Submit = require('../models/submit');
 
 // Get all submitted details
@@ -17,7 +18,11 @@ router.post('/', async (req, res) => {
   try {
     const { username, answers } = req.body;
 
-    // Create a new Submit entry
+    // Basic validation for required fields
+    if (!username || !answers) {
+      return res.status(400).json({ error: 'Username and answers are required' });
+    }
+
     const newDetails = new Submit({ username, answers });
     const savedDetails = await newDetails.save();
 
@@ -30,10 +35,14 @@ router.post('/', async (req, res) => {
 // Delete a specific submitted detail by ID
 router.delete('/:id', async (req, res) => {
   try {
-    const detailId = req.params.id;
+    const { id } = req.params;
 
-    // Delete the submitted detail
-    const deletedDetail = await Submit.findByIdAndDelete(detailId);
+    // Validate MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+
+    const deletedDetail = await Submit.findByIdAndDelete(id);
     if (!deletedDetail) {
       return res.status(404).json({ error: 'Detail not found' });
     }

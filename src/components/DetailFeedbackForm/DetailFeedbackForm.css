@@ -13,7 +13,7 @@ body {
     max-width: 1000px;
     margin: 20px auto;
     padding: 20px;
-    min-height: 600px;
+    /* min-height: 600px; */
   }
   
   .luovi-logo {
@@ -158,7 +158,7 @@ body {
 
 /* Position the Next Button */
 .next-button {
-  position: absolute;
+  /* position: absolute; */
   right: 20px;
   font-size: 16px;
   font-weight: bold;

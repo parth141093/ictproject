@@ -9,7 +9,7 @@ const submitSchema = new mongoose.Schema({
       i_need_some_exercise: { type: Boolean, required: true },
       is_emoji: { type: Boolean, default: false },
       feedback: { type: String, default: null },
-      question_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
+      question_name: { type: String, required: true },
     },
   ],
 });

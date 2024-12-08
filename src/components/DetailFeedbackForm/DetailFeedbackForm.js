@@ -1,22 +1,36 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./DetailFeedbackForm.css";
 import logo from "../../luovi-logo.png";
+import RedIcon from '../Icons/RedIcon';
+import YellowIcon from '../Icons/YellowIcon';
+import GreenIcon from '../Icons/GreenIcon';
 
 function DetailFeedbackForm() {
+  const { state } = useLocation();
+  const { username } = state || {};
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [feedback, setFeedback] = useState({});
+  const [feedback, setFeedback] = useState([]);
+  const [validationError, setValidationError] = useState('');
+
+  useEffect(() => {
+    if (!username) {
+      navigate("/", { replace: true });
+    }
+  }, [username, navigate]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/questions");
+        const response = await axios.get("http://localhost:3000/api/questions");
         const fetchedQuestions = response.data;
-        setQuestions(fetchedQuestions);
+        setQuestions(fetchedQuestions.filter((question) => question.options.is_emoji));
         setIsLoading(false);
       } catch (err) {
         setError("Failed to fetch questions.");
@@ -28,22 +42,62 @@ function DetailFeedbackForm() {
   }, []);
 
   const handleFeedbackChange = (questionId, value) => {
-    setFeedback((prevFeedback) => ({
-      ...prevFeedback,
-      [questionId]: value,
-    }));
+    setFeedback((prevFeedback) => {
+      const existingIndex = prevFeedback.findIndex(
+        (answer) => answer.question_id === questionId
+      );
+
+      const newAnswer = {
+        question_id: questionId,
+        i_did_well: value === 3,
+        sometimes_i_succeeded: value === 2,
+        i_need_some_exercise: value === 1,
+        is_emoji: true,
+        feedback: null
+      };
+
+      if (existingIndex !== -1) {
+        const updatedFeedback = [...prevFeedback];
+        updatedFeedback[existingIndex] = newAnswer;
+        return updatedFeedback;
+      } else {
+        return [...prevFeedback, newAnswer];
+      }
+    });
+  };
+
+  const handleNextQuestion = () => {
+    // Check if feedback is given for the current question
+    const currentFeedback = feedback.find(
+      (answer) => answer.question_id === currentQuestion._id
+    );
+  
+    // If feedback is not provided, show an error message
+    if (!currentFeedback) {
+      setValidationError("Please provide feedback for this question before proceeding.");
+      return;
+    }
+  
+    // If there is feedback, move to the next question
+    setValidationError(null); // Clear any previous error
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // Once the last question is reached, navigate to /feedback-2 with feedback and username
+      navigate("/feedback-2", { state: { username, feedback } });
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
   };
 
   const readQuestion = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "fi-FI"; // Set the language to Finnish
     speechSynthesis.speak(utterance);
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
   };
 
   if (isLoading) {
@@ -76,7 +130,7 @@ function DetailFeedbackForm() {
 
       <div className="question-container text-center">
         <h4>{currentQuestion.question}</h4>
-        {/* Listen button container */}
+
         <div className="listen-button-container">
           <button
             className="btn btn-link p-0"
@@ -91,78 +145,88 @@ function DetailFeedbackForm() {
           </button>
         </div>
         Kuuntele
+        {currentQuestion.image && (
+          <div className="icon-container me-3 d-flex justify-content-center">
+            <div className="w-25">
+              <img
+                src={currentQuestion.image || "https://via.placeholder.com/150"}
+                alt={currentQuestion.question || "Question Image"}
+                className="img-fluid"
+              />
+            </div>
+          </div>
+        )}
         <div className="feedback-options d-flex justify-content-center mt-3">
-          <div
-            className={`feedback-option height-200px mx-2 ${
-              feedback[currentQuestion._id] === 3 ? "selected" : ""
-            }`}
+          {currentQuestion.options.i_did_well && (<div
+            className={`feedback-option mx-2 ${feedback.some(
+              (answer) =>
+                answer.question_id === currentQuestion._id && answer.i_did_well
+            )
+              ? 'selected'
+              : ''
+              }`}
             onClick={() => handleFeedbackChange(currentQuestion._id, 3)}
           >
-            <svg className="feedback-icon success" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9 16C9.85 16.63 10.88 17 12 17C13.12 17 14.15 16.63 15 16" />
-              <path d="M16 10.5C16 11.33 15.55 12 15 12C14.45 12 14 11.33 14 10.5C14 9.67 14.45 9 15 9C15.55 9 16 9.67 16 10.5Z" />
-              <ellipse cx="9" cy="10.5" rx="1" ry="1.5" />
-            </svg>
-            <p>Onnistuin hyvin</p>
-          </div>
-          <div
-            className={`feedback-option mx-2 ${
-              feedback[currentQuestion._id] === 2 ? "selected" : ""
-            }`}
+            <GreenIcon />
+            Onnistuin hyvin
+          </div>)}
+          {currentQuestion.options.sometimes_i_succeeded && (<div
+            className={`feedback-option mx-2 ${feedback.some(
+              (answer) =>
+                answer.question_id === currentQuestion._id && answer.sometimes_i_succeeded
+            )
+              ? 'selected'
+              : ''
+              }`}
             onClick={() => handleFeedbackChange(currentQuestion._id, 2)}
           >
-            <svg className="feedback-icon neutral" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="9" y1="16" x2="15" y2="16" />
-              <circle cx="9" cy="10.5" r="1.5" />
-              <circle cx="15" cy="10.5" r="1.5" />
-            </svg>
-            <p>Onnistuin toisinaan</p>
-          </div>
-          <div
-            className={`feedback-option mx-2 ${
-              feedback[currentQuestion._id] === 1 ? "selected" : ""
-            }`}
+            <YellowIcon />
+            Onnistuin toisinaan
+          </div>)}
+          {currentQuestion.options.i_need_some_exercise && (<div
+            className={`feedback-option mx-2 ${feedback.some(
+              (answer) =>
+                answer.question_id === currentQuestion._id && answer.i_need_some_exercise
+            )
+              ? 'selected'
+              : ''
+              }`}
             onClick={() => handleFeedbackChange(currentQuestion._id, 1)}
           >
-            <svg className="feedback-icon failure" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9 16C9.85 15.37 10.88 15 12 15C13.12 15 14.15 15.37 15 16" />
-              <path d="M16 10.5C16 11.33 15.55 12 15 12C14.45 12 14 11.33 14 10.5C14 9.67 14.45 9 15 9C15.55 9 16 9.67 16 10.5Z" />
-              <ellipse cx="9" cy="10.5" rx="1" ry="1.5" />
-            </svg>
-            <p>Tarvitsen vielä harjoitusta</p>
-          </div>
+             <RedIcon />
+            Tarvitsen vielä harjoitusta
+          </div>)}
         </div>
       </div>
+      {validationError && (
+        <div className='validation-error text-danger text-center'>
+          {validationError}
+        </div>
+      )}
       <button
         className="btn btn-secondary back-button mt-4"
-        onClick={() => {
-            if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
-            }
-        }}
+        onClick={handlePreviousQuestion}
         disabled={currentQuestionIndex === 0}
         aria-label="Back to Previous Question"
-        >
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <path fill="currentColor" d="M16 8l1.43 1.393L11.85 15H24v2H11.85l5.58 5.573L16 24l-8-8z" />
-            <path fill="currentColor" d="M16 30a14 14 0 1 1 14-14a14.016 14.016 0 0 1-14 14m0-26a12 12 0 1 0 12 12A12.014 12.014 0 0 0 16 4" />
+          <path fill="currentColor" d="M16 8l1.43 1.393L11.85 15H24v2H11.85l5.58 5.573L16 24l-8-8z" />
+          <path fill="currentColor" d="M16 30a14 14 0 1 1 14-14a14.016 14.016 0 0 1-14 14m0-26a12 12 0 1 0 12 12A12.014 12.014 0 0 0 16 4" />
         </svg>
         <span>Takaisin</span>
-        </button>      
-      <button
-        className="btn btn-primary next-button mt-4"
-        onClick={handleNextQuestion}
-        disabled={currentQuestionIndex >= questions.length - 1}
-        aria-label="Next Question"
+      </button>
+      <div className="d-flex justify-content-end mb-3">
+        <button
+          className="btn btn-primary next-button mt-4"
+          onClick={handleNextQuestion}
+          aria-label="Next Question"
         >
-        <span>Seuraava Sivu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="m16 8l-1.43 1.393L20.15 15H8v2h12.15l-5.58 5.573L16 24l8-8z"/><path fill="currentColor" d="M16 30a14 14 0 1 1 14-14a14.016 14.016 0 0 1-14 14m0-26a12 12 0 1 0 12 12A12.014 12.014 0 0 0 16 4"/></svg>
+          <span>Seuraava Sivu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="m16 8l-1.43 1.393L20.15 15H8v2h12.15l-5.58 5.573L16 24l8-8z" /><path fill="currentColor" d="M16 30a14 14 0 1 1 14-14a14.016 14.016 0 0 1-14 14m0-26a12 12 0 1 0 12 12A12.014 12.014 0 0 0 16 4" /></svg>
         </button>
-            </div>
-        );
-        }
+      </div>
+    </div>
+  );
+}
 
 export default DetailFeedbackForm;

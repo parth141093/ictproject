@@ -1,4 +1,4 @@
-// Login.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,20 +8,38 @@ import '../Login.css'; // Add this for custom styles
 function Login() {
   const [username, setUsername] = useState('');
   const [isDetailedFeedback, setIsDetailedFeedback] = useState(null);
+  const [error, setError] = useState(null); // State for showing error message
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    switch (isDetailedFeedback) {
-      case true:
-        navigate('/detail-feedback-form', { state: { username } });
-        break;
-      case false:
-        navigate('/simple-feedback-form', { state: { username } });
-        break;
-      default:
-        alert('Please select a feedback form.');
-        break;
+    setError(null); // Reset error message before making the request
+
+    try {
+      const response = await axios.get(`http://localhost:3000/api/usernames/${username}`);
+
+      if (response.status === 200) {
+        // Proceed to navigation based on selected feedback form
+        switch (isDetailedFeedback) {
+          case true:
+            navigate('/detail-feedback-form', { state: { username } });
+            break;
+          case false:
+            navigate('/simple-feedback-form', { state: { username } });
+            break;
+          default:
+            setError('Please select a feedback form.');
+            break;
+        }
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        // Show error if the username was not found
+        setError('Username not found. Please try again.');
+      } else {
+        // Handle other errors
+        setError('An error occurred. Please try again later.');
+      }
     }
   };
 
@@ -40,6 +58,7 @@ function Login() {
                 style={{ maxHeight: '120px' }}
               />
             </div>
+            {error && <div className="alert alert-danger">{error}</div>} {/* Display error message */}
             <form onSubmit={handleSubmit}>
               <div className='mb-4'>
                 <label htmlFor='username' className='form-label'>
