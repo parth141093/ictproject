@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import Cookies from "js-cookie"; // Import js-cookie
 import Sidebar from "./Sidebar";
 import ViewQuestions from "./ViewQuestions";
 import EditQuestion from "./EditQuestion";
@@ -9,19 +10,30 @@ import ViewUsernames from "./ViewUsernames";
 import logo from "../luovi-logo.png"; // Import the logo
 
 const AdminLayout = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Check if user is authenticated based on cookie
+  useEffect(() => {
+    const isAuthCookie = Cookies.get("isAuthenticated");
+    if (isAuthCookie === "true") {
+      setError(""); // Clear any lingering errors
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username === "admin" && password === "Lu0w1") {
-      setIsAuthenticated(true);
+      // Set the cookie for 1 day
+      Cookies.set("isAuthenticated", "true", { expires: 1 });
+      window.location.reload(); // Reload to apply the authenticated state
     } else {
       setError("Invalid username or password.");
     }
   };
+
+  const isAuthenticated = Cookies.get("isAuthenticated") === "true";
 
   if (!isAuthenticated) {
     return (

@@ -11,6 +11,16 @@ function Login() {
   const [error, setError] = useState(null); // State for showing error message
   const navigate = useNavigate();
 
+  const setSessionWithExpiry = (key, value, expiryInMinutes) => {
+    const now = new Date();
+    const expiryTime = now.getTime() + expiryInMinutes * 60 * 1000; // Convert minutes to milliseconds
+    const item = {
+      value: value,
+      expiry: expiryTime,
+    };
+    sessionStorage.setItem(key, JSON.stringify(item));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); // Reset error message before making the request
@@ -19,13 +29,16 @@ function Login() {
       const response = await axios.get(`http://localhost:3000/api/usernames/${username}`);
 
       if (response.status === 200) {
-        // Proceed to navigation based on selected feedback form
+        // Store the username in session storage for 10 minutes
+        setSessionWithExpiry('username', username, 10);
+
+        // Navigate based on the selected feedback form
         switch (isDetailedFeedback) {
           case true:
-            navigate('/detail-feedback-form', { state: { username } });
+            navigate('/detail-feedback-form');
             break;
           case false:
-            navigate('/simple-feedback-form', { state: { username } });
+            navigate('/simple-feedback-form');
             break;
           default:
             setError('Please select a feedback form.');
