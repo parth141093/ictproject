@@ -24,7 +24,7 @@ const AdminLayout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "Lu0w1") {
+    if (username === "admin" && password === "admin") {
       // Set the cookie for 1 day
       Cookies.set("isAuthenticated", "true", { expires: 1 });
       window.location.reload(); // Reload to apply the authenticated state
