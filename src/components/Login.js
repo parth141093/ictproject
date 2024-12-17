@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from '../luovi-logo.png'; // Import the logo
-import '../Login.css'; // Add this for custom styles
+import logo from '../luovi-logo.png';
+import simple from '../images/simple.png';
+import detail from '../images/detail.png';
+import '../Login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -61,7 +63,7 @@ function Login() {
       <div className='row justify-content-center w-100'>
         <div className='col-lg-6 col-md-8 col-sm-10'>
           <div className='card shadow-lg p-5'>
-            <h2 className='card-title text-center mb-4'>Login</h2>
+            <h2 className='card-title text-center mb-4'>Kirjaudu sisään</h2>
             {/* Luovi Logo */}
             <div className='text-center mb-4'>
               <img
@@ -75,22 +77,22 @@ function Login() {
             <form onSubmit={handleSubmit}>
               <div className='mb-4'>
                 <label htmlFor='username' className='form-label'>
-                  Username
+                Käyttäjätunnus
                 </label>
                 <input
                   type='text'
                   id='username'
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder='Enter your username'
+                  placeholder='Kirjoita käyttäjänimesi'
                   required
                   className='form-control form-control-lg'
                 />
               </div>
               <div className='mb-4'>
-                <label className='form-label'>Select Feedback Form</label>
+                <label className='form-label'>Valitse Palautelomake</label>
                 <div>
-                  <div className='form-check mb-3'>
+                  <div className='form-check mb-3 d-flex align-items-center'>
                     <input
                       type='radio'
                       id='simple'
@@ -99,11 +101,17 @@ function Login() {
                       onChange={() => setIsDetailedFeedback(false)}
                       className='form-check-input large-checkbox'
                     />
-                    <label htmlFor='simple' className='form-check-label'>
-                      Simple Feedback Form
+                    <label htmlFor='simple' className='form-check-label d-flex align-items-center'>
+                       <img
+                        src={detail}
+                        alt='Detailed Feedback Icon'
+                        className='me-2'
+                        style={{ height: '50px', width: '50px' }}
+                      />
+                      Palautelomake
                     </label>
                   </div>
-                  <div className='form-check'>
+                  <div className='form-check d-flex align-items-center'>
                     <input
                       type='radio'
                       id='detailed'
@@ -112,14 +120,20 @@ function Login() {
                       onChange={() => setIsDetailedFeedback(true)}
                       className='form-check-input large-checkbox'
                     />
-                    <label htmlFor='detailed' className='form-check-label'>
-                      Detailed Feedback Form
+                    <label htmlFor='detailed' className='form-check-label d-flex align-items-center'>
+                    <img
+                        src={simple}
+                        alt='Simple Feedback Icon'
+                        className='me-2'
+                        style={{ height: '50px', width: '50px' }}
+                      />
+                      saatavilla oleva palautelomake
                     </label>
                   </div>
                 </div>
               </div>
               <button type='submit' className='btn btn-primary btn-lg w-100'>
-                Login
+              Kirjaudu sisään
               </button>
             </form>
           </div>

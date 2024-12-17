@@ -14,7 +14,7 @@ const Sidebar = () => {
       <CDBSidebar textColor="#fff" backgroundColor="#333" style={{ height: '100vh', position: 'fixed' }}>
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/admin" className="text-decoration-none" style={{ color: 'inherit' }}>
-            Luowi
+            Luovi
           </a>
         </CDBSidebarHeader>
 
